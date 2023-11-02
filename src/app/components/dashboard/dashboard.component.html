@@ -8,18 +8,18 @@
                 </div>
                 <div class="shadow">
                     <div class="input-group mb-3 mt-4">
-                        <input type="text" class="form-control" placeholder="Add Your Task here"  aria-describedby="button-addon2">
+                        <input type="text" class="form-control" placeholder="Add Your Task here"  [(ngModel)]="addTaskData" aria-describedby="button-addon2">
                         <button class="btn btn-outline-success" type="button" (click)="addTasks()" >Add Task</button>
                       </div>
                 </div>
 
                 <h3 class="text-primary mt-5">Task : </h3>
                 <div style="overflow: auto; height: 350px;">
-                    <div class="m-3">
+                    <div class="m-3" *ngFor="let data of allTask">
                         <div class="p-2 shadow border">
                            <div class="input-group row ps-3">
-                            <div class="card col-md-8 border-0" *ngFor="let data of allTask">
-                              {{data.id}}
+                            <div class="card col-md-8 border-0">
+                              {{data.task}}
                             </div>
                             <button class="btn btn-outline-success col me-1">Edit</button>
                             <button class="btn btn-outline-danger col">Delete</button>

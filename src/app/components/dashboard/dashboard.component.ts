@@ -6,47 +6,74 @@ import { TaskService } from 'src/app/services/task.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent implements OnInit{
-  
-  TaskRecord:Task = {
-    id:0,
-    task: ''
-
-  }
+export class DashboardComponent implements OnInit {
+  TaskRecord: Task = {
+    id: 0,
+    task: '',
+  };
 
   allTask: any;
 
-  
+  //Create  Variable for hold value
+  taskObj: Task = new Task();
+  taskArry: [] = [];
+  addTaskData: string = '';
 
-  constructor(private taskS:TaskService, private router:Router){
-
-  }
+  constructor(private taskS: TaskService, private router: Router) {}
   ngOnInit(): void {
-  this.getAllTasks()
+
+    this.getAllTasks();
+    this.taskArry = [];
+    this.taskObj = new Task();
+
   }
 
-  addTasks(){
-    this.taskS.addTask(this.TaskRecord).subscribe((data)=>{
-      this.router.navigate(["/"])
+  addTasks() {
+    this.taskObj.task = this.addTaskData
+    this.taskS.addTask(this.taskObj).subscribe(
+      (res) => {
+        this.ngOnInit();
+        this.addTaskData =''
+      },
+      (err) => {
+        alert(err);
+      }
+    );
+  }
+
+  //  get all task
+
+  getAllTasks() {
+    this.taskS.getAllTask().subscribe(
+      (res) => {
+        this.allTask = res;
+      },
+      (err) => {
+        alert('Unable to find task');
+      }
+    );
+  }
+
+  //  Edit Task 
+
+  editTask(){
+    this.taskS.updateTask(this.taskObj).subscribe(res =>{
+     this.ngOnInit()
+    },err =>{
+      alert('Unable to Update task')
     })
   }
 
-
-
-  getAllTasks(){
-    this.taskS.getAllTask().subscribe((data)=>{
-      this.allTask = data;
-      console.log(this.allTask)
-    })
-  }
-
-  deleteTasks(data:any){
-    this.taskS.deleteTask(data.id).subscribe(res =>{
-      // alert("")
-    })
-  }
   
+
+  deleteTasks(data: any) {
+    this.taskS.deleteTask(data.id).subscribe((res) => {
+      this.ngOnInit()
+    }, err =>{
+      alert('Delete task')
+    });
+  }
 
 }
