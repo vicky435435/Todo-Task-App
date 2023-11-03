@@ -68,8 +68,8 @@ export class DashboardComponent implements OnInit {
 
   
 
-  deleteTasks(data: any) {
-    this.taskS.deleteTask(data.id).subscribe((res) => {
+  deleteTasks(task : Task) {
+    this.taskS.deleteTask(task).subscribe((res) => {
       this.ngOnInit()
     }, err =>{
       alert('Delete task')
